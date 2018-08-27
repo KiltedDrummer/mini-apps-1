@@ -9,10 +9,10 @@
 		<div class="header">
 			<div class="left">
 				<div class="playerX">
-					<h2>Player X : <span id='X'>0</span></h2>
+					<h2><span id="xName" onClick="nameClicked('X')"></span> X : <span id='X'>0</span></h2>
 				</div>
 				<div class="playerO">
-					<h2>Player O : <span id='O'>0</span></h2>
+					<h2><span id="oName" onClick="nameClicked('O')"></span> O : <span id='O'>0</span></h2>
 				</div>
 			</div>
 			<div class="center">
@@ -51,5 +51,6 @@
 	</body>
 	<script type="text/javascript">
 	var gameboard = new Board('X');
+	setName();
 	</script>
 	</html>
