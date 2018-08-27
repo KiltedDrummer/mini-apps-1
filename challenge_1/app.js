@@ -4,50 +4,106 @@
 ************************************************
 */
 
-var currentPiece = 'X';
-var ended = false;
-var placed = 0;
-var score = {
-	X: 0,
-	O: 0
-}
-var names = {
-	X: 'Player -',
-	O: 'Player -'
+class Rules {
+
+	constructor () {
+		this.currentPiece = 'X';
+		this.ended = false;
+		this.placed = 0;
+
+		this.score = {
+			X: 0,
+			O: 0
+		}
+
+		this.names = {
+			X: 'Player ',
+			O: 'Player '
+		};
+		
 }
 
-var changePiece = (str) => {
-		if (str === 'X') {
-			currentPiece = 'O';
+	changePiece (str) {
+			if (str === 'X') {
+				this.currentPiece = 'O';
+			} else {
+				this.currentPiece = 'X';
+			}
+		}
+
+	// clicked (boxNum) {
+	// 	if (!this.ended) {
+	// 		var piece = document.getElementById(boxNum);
+	// 		if (!piece.innerText) {
+	// 			// add piece to box
+	// 			piece.innerText = this.currentPiece;
+	// 			gameboard.updateBoard(boxNum);
+	// 			this.changePiece(this.currentPiece);
+	// 		}
+	// 	}
+	// }
+
+	resetBoard () {
+		var boxes = document.getElementsByClassName('box');
+		for (var i = 0; i < boxes.length; i++) {
+			boxes[i].innerText = '';
+		};
+
+		this.ended = false;
+		// currentPiece = 'X';
+		this.changePiece(this.currentPiece);
+		this.placed = 0;
+		gameboard = new Board();
+		document.getElementById('result').innerText = this.resultName(this.names[this.currentPiece]) + '\'s Turn!';
+	}
+
+	resultName (str) {
+		if (str.includes('-')) {
+			return str.slice(0, str.length - 2)
 		} else {
-			currentPiece = 'X';
+			return `${str} ${this.currentPiece}`
 		}
 	}
-
-var clicked = (boxNum) => {
-	if (!ended) {
-		var piece = document.getElementById(boxNum);
-		if (!piece.innerText) {
-			// add piece to box
-			piece.innerText = currentPiece;
-			gameboard.updateBoard(boxNum);
-			changePiece(currentPiece);
-		}
-	}
+	
 }
 
-var resetBoard = () => {
-	var boxes = document.getElementsByClassName('box');
-	for (var i = 0; i < boxes.length; i++) {
-		boxes[i].innerText = '';
-	};
+/*
+************************************************
+		User Inputs 
+************************************************
+*/
 
-	ended = false;
-	// currentPiece = 'X';
-	changePiece(currentPiece);
-	placed = 0;
-	gameboard = new Board();
-	document.getElementById('result').innerText = 'Player ' + currentPiece + '\'s turn!';
+class Inputs {
+	constructor () {
+
+	}
+
+	setName () {
+		document.getElementById('xName').innerText = rules.names.X;
+		document.getElementById('oName').innerText = rules.names.O;
+	}
+
+	nameClicked (str) {
+		rules.names[str] = window.prompt('Player ' + str + '\'s Name');
+		if (!rules.names[str]) {
+			rules.names[str] = 'Player';
+		} else {
+			rules.names[str] += ' -';
+		}
+		this.setName();
+	}
+
+	clicked (boxNum) {
+		if (!rules.ended) {
+			var piece = document.getElementById(boxNum);
+			if (!piece.innerText) {
+				// add piece to box
+				piece.innerText = rules.currentPiece;
+				gameboard.updateBoard(boxNum);
+				rules.changePiece(rules.currentPiece);
+			}
+		}
+	}
 }
 
 /*
@@ -66,16 +122,16 @@ class Board {
 	}
 
 	placePiece(rowNum, boxNum) {
-		placed++;
+		rules.placed++;
 		if (boxNum % 3 === 1) {
-			this.board[rowNum][0] = currentPiece;
-			this.checkBoard(rowNum, 0, currentPiece);
+			this.board[rowNum][0] = rules.currentPiece;
+			this.checkBoard(rowNum, 0, rules.currentPiece);
 		} else if (boxNum % 3 === 2) {
-			this.board[rowNum][1] = currentPiece;
-			this.checkBoard(rowNum, 1, currentPiece);
+			this.board[rowNum][1] = rules.currentPiece;
+			this.checkBoard(rowNum, 1, rules.currentPiece);
 		} else {
-			this.board[rowNum][2] = currentPiece;
-			this.checkBoard(rowNum, 2, currentPiece);
+			this.board[rowNum][2] = rules.currentPiece;
+			this.checkBoard(rowNum, 2, rules.currentPiece);
 		}
 	}
 
@@ -109,41 +165,19 @@ class Board {
 		}
 
 		if (solved) {
-			document.getElementById('result').innerText = `Player ${piece} Wins!`;
-			ended = true;
-			score[piece]++
-			document.getElementById('X').innerText = score['X'];
-			document.getElementById('O').innerText = score['O'];
-		} else if (!solved && placed === 9) {
+			document.getElementById('result').innerText = `${rules.resultName(rules.names[rules.currentPiece])} Wins!`;
+			rules.ended = true;
+			rules.score[piece]++
+			document.getElementById('X').innerText = rules.score['X'];
+			document.getElementById('O').innerText = rules.score['O'];
+		} else if (!solved && rules.placed === 9) {
 			document.getElementById('result').innerText = 'It\'s a Draw!';
 		} else {
-			if (currentPiece === 'X') {
-				document.getElementById('result').innerText = 'Player O\'s Turn!';
-			} else {
-				document.getElementById('result').innerText = 'Player X\'s Turn!';
-			}
+			document.getElementById('result').innerText = rules.resultName(rules.names[rules.currentPiece]) + '\'s Turn!';
+			
 		}
 	}
 
-}
-
-/*
-************************************************
-		Setting Player Names 
-************************************************
-*/
-
-
-var setName = () => {
-	document.getElementById('xName').innerText = names.X;
-	document.getElementById('oName').innerText = names.O;
-
-}
-
-var nameClicked = (str) => {
-	names[str] = window.prompt('Player ' + str + '\'s Name');
-	names[str] += ' -'
-	setName();
 }
 
 

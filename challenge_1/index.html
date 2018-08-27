@@ -9,10 +9,10 @@
 		<div class="header">
 			<div class="left">
 				<div class="playerX">
-					<h2><span id="xName" onClick="nameClicked('X')"></span> X : <span id='X'>0</span></h2>
+					<h2><span id="xName" onClick="inputs.nameClicked('X')"></span> X : <span id='X'>0</span></h2>
 				</div>
 				<div class="playerO">
-					<h2><span id="oName" onClick="nameClicked('O')"></span> O : <span id='O'>0</span></h2>
+					<h2><span id="oName" onClick="inputs.nameClicked('O')"></span> O : <span id='O'>0</span></h2>
 				</div>
 			</div>
 			<div class="center">
@@ -24,26 +24,26 @@
 				</div>
 			</div>
 			<div class="right">
-				<button class="reset" onClick="resetBoard()">Reset</button>
+				<button class="reset" onClick="rules.resetBoard()">Reset</button>
 			</div>
 			
 		</div>
 		<div class="body">
 			<div class="game-board">
 				<div class="topRow">
-					<div id="1" class="box" onClick="clicked(1)"></div>
-					<div id="2" class="box" onClick="clicked(2)"></div>
-					<div id="3" class="box" onClick="clicked(3)"></div>
+					<div id="1" class="box" onClick="inputs.clicked(1)"></div>
+					<div id="2" class="box" onClick="inputs.clicked(2)"></div>
+					<div id="3" class="box" onClick="inputs.clicked(3)"></div>
 				</div>
 				<div class="middleRow">
-					<div id="4" class="box" onClick="clicked(4)"></div>
-					<div id="5" class="box" onClick="clicked(5)"></div>
-					<div id="6" class="box" onClick="clicked(6)"></div>
+					<div id="4" class="box" onClick="inputs.clicked(4)"></div>
+					<div id="5" class="box" onClick="inputs.clicked(5)"></div>
+					<div id="6" class="box" onClick="inputs.clicked(6)"></div>
 				</div>
 				<div class="bottomRow">
-					<div id="7" class="box" onClick="clicked(7)"></div>
-					<div id="8" class="box" onClick="clicked(8)"></div>
-					<div id="9" class="box" onClick="clicked(9)"></div>
+					<div id="7" class="box" onClick="inputs.clicked(7)"></div>
+					<div id="8" class="box" onClick="inputs.clicked(8)"></div>
+					<div id="9" class="box" onClick="inputs.clicked(9)"></div>
 				</div>
 			</div>
 			<div class="player"></div>
@@ -51,6 +51,8 @@
 	</body>
 	<script type="text/javascript">
 	var gameboard = new Board('X');
-	setName();
+	var rules = new Rules;
+	var inputs = new Inputs;
+	inputs.setName();
 	</script>
 	</html>
