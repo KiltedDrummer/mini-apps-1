@@ -9,10 +9,10 @@
 		<div class="header">
 			<div class="left">
 				<div class="playerX">
-					<h2>Player X : <span>0</span></h2>
+					<h2>Player X : <span id='X'>0</span></h2>
 				</div>
 				<div class="playerO">
-					<h2>Player O : <span>0</span></h2>
+					<h2>Player O : <span id='O'>0</span></h2>
 				</div>
 			</div>
 			<div class="center">
@@ -20,7 +20,7 @@
 					<h1>Tic-Tac-Toe</h1>
 				</div>
 				<div class="result">
-					<h1>New Game</h1>
+					<h1 id="result">New Game</h1>
 				</div>
 			</div>
 			<div class="right">
@@ -49,38 +49,4 @@
 			<div class="player"></div>
 		</div>
 	</body>
-	<script type="text/javascript">
-	var currentPiece = 'X';
-	var score = {
-		X: 0,
-		O: 0
-	}
-
-	var changePiece = (str) => {
-		if (str === 'X') {
-			currentPiece = 'O';
-		} else {
-			currentPiece = 'X';
-		}
-	}
-
-	var clicked = (boxNum) => {
-		var piece = document.getElementById(boxNum);
-		console.log('clicked', piece, piece.innerText);
-		if (!piece.innderText) {
-			// add piece to box
-			piece.innerText = currentPiece;
-			changePiece(currentPiece);
-		}
-	}
-
-	var resetBoard = () => {
-		var boxes = document.getElementsByClassName('box');
-		for (var i = 0; i < boxes.length; i++) {
-			boxes[i].innerText = '';
-		};
-
-		currentPiece = 'X';
-	}
-	</script>
 	</html>
