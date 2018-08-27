@@ -36,15 +36,18 @@ Main body
 Game Board
 */
 
-.gameBoard {
+.game-board {
 	display: grid;
 	grid-template-row: 100px 100px 100px;
+	margin-left: 150px;
 }
 
 .box {
 	border: 2px solid black;
 	height: 100px;
-	text-align: center
+	text-align: center;
+	font-size: 48px;
+	line-height: 96px;
 }
 
 .topRow {
@@ -71,15 +74,15 @@ Game Board
 	grid-template-columns: 100px 100px 100px;
 }
 
-.4 {
+#4 {
 	grid-column: 1;
 }
 
-.5 {
+#5 {
 	grid-column: 2;
 }
 
-.6 {
+#6 {
 	grid-column: 3;
 }
 
@@ -89,14 +92,14 @@ Game Board
 	grid-template-columns: 100px 100px 100px;
 }
 
-.7 {
+#7 {
 	grid-column: 1;
 }
 
-.8 {
+#8 {
 	grid-column: 2;
 }
 
-.9 {
+#9 {
 	grid-column: 3;
 }
