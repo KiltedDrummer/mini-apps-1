@@ -31,32 +31,6 @@ class Rules {
 			}
 		}
 
-	// clicked (boxNum) {
-	// 	if (!this.ended) {
-	// 		var piece = document.getElementById(boxNum);
-	// 		if (!piece.innerText) {
-	// 			// add piece to box
-	// 			piece.innerText = this.currentPiece;
-	// 			gameboard.updateBoard(boxNum);
-	// 			this.changePiece(this.currentPiece);
-	// 		}
-	// 	}
-	// }
-
-	resetBoard () {
-		var boxes = document.getElementsByClassName('box');
-		for (var i = 0; i < boxes.length; i++) {
-			boxes[i].innerText = '';
-		};
-
-		this.ended = false;
-		// currentPiece = 'X';
-		this.changePiece(this.currentPiece);
-		this.placed = 0;
-		gameboard = new Board();
-		document.getElementById('result').innerText = this.resultName(this.names[this.currentPiece]) + '\'s Turn!';
-	}
-
 	resultName (str) {
 		if (str.includes('-')) {
 			return str.slice(0, str.length - 2)
@@ -104,6 +78,21 @@ class Inputs {
 			}
 		}
 	}
+
+	resetBoard () {
+		var boxes = document.getElementsByClassName('box');
+		for (var i = 0; i < boxes.length; i++) {
+			boxes[i].innerText = '';
+		};
+
+		rules.ended = false;
+		// currentPiece = 'X';
+		rules.changePiece(rules.currentPiece);
+		rules.placed = 0;
+		gameboard = new Board();
+		document.getElementById('result').innerText = rules.resultName(rules.names[rules.currentPiece]) + '\'s Turn!';
+	}
+
 }
 
 /*
