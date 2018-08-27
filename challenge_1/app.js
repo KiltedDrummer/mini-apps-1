@@ -32,10 +32,16 @@ class Rules {
 		}
 
 	resultName (str) {
+		let piece;
+			if (rules.currentPiece === 'X') {
+				piece = 'O'
+			} else {
+				piece = 'X'
+			}
 		if (str.includes('-')) {
 			return str.slice(0, str.length - 2)
 		} else {
-			return `${str} ${this.currentPiece}`
+			return `${str} ${piece}`
 		}
 	}
 	
@@ -49,6 +55,7 @@ class Rules {
 
 class Inputs {
 	constructor () {
+		this.rotation = false;
 
 	}
 
@@ -76,6 +83,9 @@ class Inputs {
 				gameboard.updateBoard(boxNum);
 				rules.changePiece(rules.currentPiece);
 			}
+			if (this.rotation) {
+				this.rotateBoard();
+			}
 		}
 	}
 
@@ -86,11 +96,45 @@ class Inputs {
 		};
 
 		rules.ended = false;
-		// currentPiece = 'X';
 		rules.changePiece(rules.currentPiece);
 		rules.placed = 0;
 		gameboard = new Board();
 		document.getElementById('result').innerText = rules.resultName(rules.names[rules.currentPiece]) + '\'s Turn!';
+	}
+
+	rotateBoard () {
+		let matrix = gameboard.board;
+		let size = matrix.length;
+		// create new empty matrix
+		let newBoard = [];
+		matrix.forEach(ele => newBoard.push(Array(size)));
+
+		// clear render
+		let boxes = document.getElementsByClassName('box');
+		for (var i = 0; i < boxes.length; i++) {
+			boxes[i].innerText = '';
+		};
+
+		// fill new matrix render as filled
+		for (var r = 0; r < size; r++) {
+			for (var c = 0; c < size; c++) {
+				newBoard[r][c] = matrix[2 - c][r];
+				if (matrix[2 - c][r]) {
+					boxes[r * 3 + c].innerText = matrix[2 - c][r];
+				}
+			}
+		}
+
+		gameboard.board = newBoard;
+	}
+
+	addRotate () {
+		this.rotation = !this.rotation;
+		if (this.rotation) {
+			document.getElementsByClassName('rotate')[0].innerText = 'Enabled';
+		}else {
+			document.getElementsByClassName('rotate')[0].innerText = 'Disabled';
+		}
 	}
 
 }
@@ -162,7 +206,13 @@ class Board {
 		} else if (!solved && rules.placed === 9) {
 			document.getElementById('result').innerText = 'It\'s a Draw!';
 		} else {
-			document.getElementById('result').innerText = rules.resultName(rules.names[rules.currentPiece]) + '\'s Turn!';
+			let piece;
+			if (rules.currentPiece === 'X') {
+				piece = 'O'
+			} else {
+				piece = 'X'
+			}
+			document.getElementById('result').innerText = rules.resultName(rules.names[piece]) + '\'s Turn!';
 			
 		}
 	}

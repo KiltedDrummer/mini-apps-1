@@ -22,6 +22,29 @@ Header Section
 	grid-column: 3;
 }
 
+.right button {
+    background-color: aliceblue;
+    padding: 25px;
+    font-size: 28px;
+    line-height: 0px;
+}
+
+.right .reset {
+	position: relative;
+  right: 33px;
+}
+
+.right .rotate {
+	position: relative;
+  right: 50px;
+  bottom: 12px;
+}
+.right h4 {
+	position: relative;
+	right: 25px;
+	line-height: 0;
+}
+
 /*
 Main body
 */
@@ -30,7 +53,14 @@ Main body
 	text-align: center;
 }
 
-
+/*
+Game rotation
+*/
+/* Build a pretty keyframe Late */
+/*@keyframes rotate {
+	0% {trasform: rotate(0deg);}
+	100% { transform: rotate(90deg);}
+}*/
 
 /*
 Game Board
