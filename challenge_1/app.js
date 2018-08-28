@@ -1,51 +1,3 @@
-/*
-************************************************
-		Global scope Variables and functions 
-************************************************
-*/
-
-class Rules {
-
-	constructor () {
-		this.currentPiece = 'X';
-		this.ended = false;
-		this.placed = 0;
-
-		this.score = {
-			X: 0,
-			O: 0
-		}
-
-		this.names = {
-			X: 'Player ',
-			O: 'Player '
-		};
-		
-}
-
-	changePiece (str) {
-			if (str === 'X') {
-				this.currentPiece = 'O';
-			} else {
-				this.currentPiece = 'X';
-			}
-		}
-
-	resultName (str) {
-		let piece;
-			if (rules.currentPiece === 'X') {
-				piece = 'O'
-			} else {
-				piece = 'X'
-			}
-		if (str.includes('-')) {
-			return str.slice(0, str.length - 2)
-		} else {
-			return `${str} ${piece}`
-		}
-	}
-	
-}
 
 /*
 ************************************************
@@ -53,15 +5,14 @@ class Rules {
 ************************************************
 */
 
-class Inputs {
+class Inputs{
 	constructor () {
 		this.rotation = false;
-
 	}
 
 	setName () {
-		document.getElementById('xName').innerText = rules.names.X;
-		document.getElementById('oName').innerText = rules.names.O;
+		document.getElementById('xName').innerText = this.names.X;
+		document.getElementById('oName').innerText = this.names.O;
 	}
 
 	nameClicked (str) {
@@ -77,18 +28,23 @@ class Inputs {
 	clicked (boxNum) {
 		if (!rules.ended) {
 			var piece = document.getElementById(boxNum);
-			if (!piece.innerText) {
+			if (piece.childNodes.length === 0) {
 				// add piece to box
 				var node = document.createElement('p');
 				node.className = 'boxNum';
 				node.setAttribute('style', "animation-name: fallIn; animation-duration: 2s; iteration-count: 1;");
 				node.innerText = rules.currentPiece;
 				piece.appendChild(node);
-				gameboard.updateBoard(boxNum);
+				rules.gameboard.updateBoard(boxNum);
+				if (this.rotation) {
+					this.rotateBoard();
+				} else if (this.currentGravity) {
+					this.gravityBoard();
+				}
 				rules.changePiece(rules.currentPiece);
-			}
-			if (this.rotation) {
-				this.rotateBoard();
+				if (!rules.ended) {
+					document.getElementById('result').innerText = rules.resultName(rules.names[rules.currentPiece]) + '\'s Turn!';
+				}
 			}
 		}
 	}
@@ -99,19 +55,67 @@ class Inputs {
 			boxes[i].innerText = '';
 		};
 
+		rules.currentGravity = rules.nextGravity;
 		rules.ended = false;
 		rules.changePiece(rules.currentPiece);
 		rules.placed = 0;
-		gameboard = new Board();
+		rules.gameboard = new Board();
+		if (rules.currentGravity) {
+			document.getElementsByClassName('gravity-button')[0].innerText = "Enabled";
+		} else {
+			document.getElementsByClassName('gravity-button')[0].innerText = "Disabled";
+		}
 		document.getElementById('result').innerText = rules.resultName(rules.names[rules.currentPiece]) + '\'s Turn!';
 	}
 
-	rotateBoard () {
-		let matrix = gameboard.board;
+	rotateMatrix(matrix) {
 		let size = matrix.length;
 		// create new empty matrix
 		let newBoard = [];
 		matrix.forEach(ele => newBoard.push(Array(size)));
+
+		for (var r = 0; r < size; r++) {
+			for (var c = 0; c < size; c++) {
+				newBoard[r][c] = matrix[2 - c][r];
+			}
+		}
+
+		return newBoard;
+	}
+
+	rotateBoard () {
+		// clear render
+		let boxes = document.getElementsByClassName('box');
+		for (var i = 0; i < boxes.length; i++) {
+			boxes[i].innerText = '';
+		};
+
+		// build matrix
+
+		let matrix = this.rotateMatrix(rules.gameboard.board)
+		let size = matrix.length;
+		// render matrix
+		for (var r = 0; r < size; r++) {
+			for (var c = 0; c < size; c++) {
+				if (matrix[r][c]) {
+					var piece = document.getElementById(r * 3 + c + 1)
+					var node = document.createElement('p');
+					node.className = 'boxNum';
+					node.setAttribute('style', "animation-name: fallIn; animation-duration: 2s; iteration-count: 1;");
+					node.innerText = matrix[r][c];
+					boxes[r * 3 + c].appendChild(node);
+				}
+			}
+		}
+
+		rules.gameboard.board = matrix;
+	}
+
+	gravityBoard () {
+		let matrix = rules.gameboard.board;
+		let size = matrix.length;
+		// create new empty matrix
+		let newBoard = this.rotateMatrix(matrix);
 
 		// clear render
 		let boxes = document.getElementsByClassName('box');
@@ -119,33 +123,108 @@ class Inputs {
 			boxes[i].innerText = '';
 		};
 
-		// fill new matrix render as filled
+		// build new matrix
+		for (var r = 1; r >= 0; r--) {
+			for (var c = 0; c < size; c++) {
+				if (newBoard[r][c] && !newBoard[r + 1][c]) {
+					newBoard[r + 1][c] = newBoard[r][c];
+					newBoard[r][c] = undefined;
+					if (r === 0) {
+						r = 1;
+						c = -1;
+					}
+				}
+			}
+		}
+
+		// render matrix;
 		for (var r = 0; r < size; r++) {
 			for (var c = 0; c < size; c++) {
-				newBoard[r][c] = matrix[2 - c][r];
-				if (matrix[2 - c][r]) {
-					var piece = document.getElementById(r * 3 + c)
+				if (newBoard[r][c]) {
+					var piece = document.getElementById(r * 3 + c + 1)
+					if (piece.childNodes.length > 0) { piece.firstChild.remove(); }
 					var node = document.createElement('p');
 					node.className = 'boxNum';
 					node.setAttribute('style', "animation-name: fallIn; animation-duration: 2s; iteration-count: 1;");
-					node.innerText = matrix[2 - c][r];
+					node.innerText = newBoard[r][c];
 					boxes[r * 3 + c].appendChild(node);
 				}
 			}
 		}
 
-		gameboard.board = newBoard;
+		rules.gameboard.board = newBoard;
 	}
 
 	addRotate () {
-		this.rotation = !this.rotation;
-		if (this.rotation) {
-			document.getElementsByClassName('rotate')[0].innerText = 'Enabled';
-		}else {
-			document.getElementsByClassName('rotate')[0].innerText = 'Disabled';
+		if (!this.currentGravity) {
+			this.rotation = !this.rotation;
+			if (this.rotation) {
+				document.getElementsByClassName('rotate')[0].innerText = 'Enabled';
+			}else {
+				document.getElementsByClassName('rotate')[0].innerText = 'Disabled';
+			}
+		} else {
+			this.rotation = false;
 		}
 	}
 
+	addGravityRotate () {
+		rules.nextGravity = !rules.nextGravity;
+		if (rules.nextGravity) {
+			document.getElementById('grav').innerText = 'Enabled';
+		} else {
+			document.getElementById('grav').innerText = 'Disabled';
+		}
+	}
+
+}
+
+/*
+************************************************
+		Global scope Variables and functions 
+************************************************
+*/
+
+class Rules extends Inputs {
+
+	constructor () {
+		super();
+		this.currentPiece = 'X';
+		this.ended = false;
+		this.placed = 0;
+		this.currentGravity = false;
+		this.nextGravity = false;
+
+		this.score = {
+			X: 0,
+			O: 0
+		};
+
+		this.names = {
+			X: 'Player ',
+			O: 'Player '
+		};
+		
+		this.gameboard = new Board;
+}
+
+	changePiece (str) {
+			if (str === 'X') {
+				this.currentPiece = 'O';
+			} else {
+				this.currentPiece = 'X';
+			}
+		}
+
+	resultName (str) {
+
+		if (str.includes('-')) {
+			return str.slice(0, str.length - 2)
+		} else {
+			return `${str} ${this.currentPiece}`
+		}
+	}
+	
 }
 
 /*
@@ -154,8 +233,9 @@ class Inputs {
 ************************************************
 */
 
-class Board {
+class Board extends Inputs{
 	constructor() {
+		super();
 		this.board = [
 			[undefined, undefined, undefined],
 			[undefined, undefined, undefined],
@@ -214,15 +294,6 @@ class Board {
 			document.getElementById('O').innerText = rules.score['O'];
 		} else if (!solved && rules.placed === 9) {
 			document.getElementById('result').innerText = 'It\'s a Draw!';
-		} else {
-			let piece;
-			if (rules.currentPiece === 'X') {
-				piece = 'O'
-			} else {
-				piece = 'X'
-			}
-			document.getElementById('result').innerText = rules.resultName(rules.names[piece]) + '\'s Turn!';
-			
 		}
 	}
 

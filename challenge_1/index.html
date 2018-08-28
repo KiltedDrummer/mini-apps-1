@@ -9,10 +9,10 @@
 		<div class="header">
 			<div class="left">
 				<div class="playerX">
-					<h2><span id="xName" onClick="inputs.nameClicked('X')"></span> X : <span id='X'>0</span></h2>
+					<h2><span id="xName" onClick="rules.nameClicked('X')"></span> X : <span id='X'>0</span></h2>
 				</div>
 				<div class="playerO">
-					<h2><span id="oName" onClick="inputs.nameClicked('O')"></span> O : <span id='O'>0</span></h2>
+					<h2><span id="oName" onClick="rules.nameClicked('O')"></span> O : <span id='O'>0</span></h2>
 				</div>
 			</div>
 			<div class="center">
@@ -24,37 +24,40 @@
 				</div>
 			</div>
 			<div class="right">
-				<button class="reset" onClick="inputs.resetBoard()">Reset</button>
-				<h4>Board Rotation</h4>
-				<button class="rotate" onClick="inputs.addRotate()">Disabled</button>
+				<button class="reset" onClick="rules.resetBoard()">Reset</button>
+				<h4 class="rotate-title">Board Rotation</h4>
+				<h4 class="gravity-title">Gravity Rotation</h4>
+				<button class="rotate" onClick="rules.addRotate()">Disabled</button><!--
+				--><button class="rotate gravity-button" onClick="rules.addGravityRotate()">Disabled</button>
+				<h4 id="nextGrav">Next Game : <span id='grav'>Disabled</span></h4>
 			</div>
 			
 		</div>
 		<div class="body">
 			<div class="game-board">
 				<div class="topRow">
-					<div id="1" class="box" onClick="inputs.clicked(1)"></div>
-					<div id="2" class="box" onClick="inputs.clicked(2)"></div>
-					<div id="3" class="box" onClick="inputs.clicked(3)"></div>
+					<div id="1" class="box" onClick="rules.clicked(1)"></div>
+					<div id="2" class="box" onClick="rules.clicked(2)"></div>
+					<div id="3" class="box" onClick="rules.clicked(3)"></div>
 				</div>
 				<div class="middleRow">
-					<div id="4" class="box" onClick="inputs.clicked(4)"></div>
-					<div id="5" class="box" onClick="inputs.clicked(5)"></div>
-					<div id="6" class="box" onClick="inputs.clicked(6)"></div>
+					<div id="4" class="box" onClick="rules.clicked(4)"></div>
+					<div id="5" class="box" onClick="rules.clicked(5)"></div>
+					<div id="6" class="box" onClick="rules.clicked(6)"></div>
 				</div>
 				<div class="bottomRow">
-					<div id="7" class="box" onClick="inputs.clicked(7)"></div>
-					<div id="8" class="box" onClick="inputs.clicked(8)"></div>
-					<div id="9" class="box" onClick="inputs.clicked(9)"></div>
+					<div id="7" class="box" onClick="rules.clicked(7)"></div>
+					<div id="8" class="box" onClick="rules.clicked(8)"></div>
+					<div id="9" class="box" onClick="rules.clicked(9)"></div>
 				</div>
 			</div>
 			<div class="player"></div>
 		</div>
 	</body>
 	<script type="text/javascript">
-	var gameboard = new Board('X');
+	// var gameboard = new Board('X');
 	var rules = new Rules;
-	var inputs = new Inputs;
-	inputs.setName();
+	// var inputs = new Inputs;
+	// rules.setName();
 	</script>
 	</html>

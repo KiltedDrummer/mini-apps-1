@@ -3,7 +3,7 @@ Header Section
 */
 .header {
 	display: grid;
-	grid-template-columns: 200px 400px 200px;
+	grid-template-columns: 200px 400px 350px;
 }
 
 .left {
@@ -14,7 +14,6 @@ Header Section
 .title {
 	display: inline-block;
 	grid-column: 2;
-	/*background-color: green;*/
 }
 
 .right {
@@ -23,10 +22,24 @@ Header Section
 }
 
 .right button {
-    background-color: aliceblue;
-    padding: 25px;
-    font-size: 28px;
-    line-height: 0px;
+	display: block;
+  background-color: aliceblue;
+  padding: 25px;
+  font-size: 28px;
+  line-height: 0px;
+}
+
+.right h4 {
+	display: inline-block;
+}
+
+.rotate-title {
+	padding-left: 4px;
+	padding-right: 43px;
+}
+
+.gravity-title {
+	padding-left: 4px;
 }
 
 .right .reset {
@@ -35,14 +48,23 @@ Header Section
 }
 
 .right .rotate {
+	display: inline-block;
+	float: left;
 	position: relative;
   right: 50px;
   bottom: 12px;
+  margin-right: 10px;
 }
 .right h4 {
 	position: relative;
 	right: 25px;
 	line-height: 0;
+}
+
+#nextGrav {
+	position: relative;
+  bottom: 20px;
+  left: 120px;
 }
 
 /*
