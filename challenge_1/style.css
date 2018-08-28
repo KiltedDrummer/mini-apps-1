@@ -54,8 +54,14 @@ Main body
 }
 
 /*
-Game rotation
+KeyFrames
 */
+
+@keyframes fallIn {
+	0% {bottom: 55px;}
+	100% {bottom: 0;}
+}
+
 /* Build a pretty keyframe Late */
 /*@keyframes rotate {
 	0% {trasform: rotate(0deg);}
@@ -76,14 +82,22 @@ Game Board
 	border: 2px solid black;
 	height: 100px;
 	text-align: center;
-	font-size: 48px;
-	line-height: 96px;
 }
 
-.topRow {
-	grid-row: 1;
+.box p {
+	font-size: 48px;
+	position: relative;
+	bottom: 0;
+}
+
+.topRow,
+.middleRow, 
+.bottomRow {
 	display: grid;
 	grid-template-columns: 100px 100px 100px;
+}
+.topRow {
+	grid-row: 1;
 }
 
 #1 {
@@ -100,8 +114,6 @@ Game Board
 
 .middleRow {
 	grid-row: 2;
-	display: grid;
-	grid-template-columns: 100px 100px 100px;
 }
 
 #4 {
@@ -118,8 +130,6 @@ Game Board
 
 .bottomRow {
 	grid-row: 3;
-	display: grid;
-	grid-template-columns: 100px 100px 100px;
 }
 
 #7 {

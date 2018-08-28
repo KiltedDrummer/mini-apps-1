@@ -79,7 +79,11 @@ class Inputs {
 			var piece = document.getElementById(boxNum);
 			if (!piece.innerText) {
 				// add piece to box
-				piece.innerText = rules.currentPiece;
+				var node = document.createElement('p');
+				node.className = 'boxNum';
+				node.setAttribute('style', "animation-name: fallIn; animation-duration: 2s; iteration-count: 1;");
+				node.innerText = rules.currentPiece;
+				piece.appendChild(node);
 				gameboard.updateBoard(boxNum);
 				rules.changePiece(rules.currentPiece);
 			}
@@ -120,7 +124,12 @@ class Inputs {
 			for (var c = 0; c < size; c++) {
 				newBoard[r][c] = matrix[2 - c][r];
 				if (matrix[2 - c][r]) {
-					boxes[r * 3 + c].innerText = matrix[2 - c][r];
+					var piece = document.getElementById(r * 3 + c)
+					var node = document.createElement('p');
+					node.className = 'boxNum';
+					node.setAttribute('style', "animation-name: fallIn; animation-duration: 2s; iteration-count: 1;");
+					node.innerText = matrix[2 - c][r];
+					boxes[r * 3 + c].appendChild(node);
 				}
 			}
 		}
