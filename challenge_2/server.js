@@ -10,7 +10,7 @@ app.use(express.static('client'))
 
 app.use(bodyParser.json());
 app.post('/', (req, res) => {
-	console.log('params ||', req.body);
+	console.log('params ||', req.body.params);
 	var data = JSON.parse(req.body.params)
 	var results = parseData(data);
 
@@ -77,8 +77,9 @@ var mockData = {
 // returns an array of obj, each object is a line entry for the CSV report
 var parseData = (data) => {
 	var results = [];
+	var entryNum = 0;
 
-	var buildEntry = (obj) => {
+	var buildEntry = (obj, num) => {
 		var fields = Object.entries(obj);
 		var entry = {};
 		fields.forEach(touple => {
@@ -86,10 +87,17 @@ var parseData = (data) => {
 				entry[touple[0]] = touple[1];
 			}
 		});
+		console.log('NUM', num);
+		if (num >= 0) {
+			entry.parent = num;
+		}
+
+		entry.idNum = entryNum;
 
 		results.push(entry);
+		entryNum++;
 		if (obj.children.length > 0) {
-			obj.children.forEach(child => buildEntry(child));
+			obj.children.forEach(child => buildEntry(child, entry.idNum));
 		}
 	}
 
@@ -107,16 +115,15 @@ var clientFormating = (results) => {
 	
 	
 	var csvIt = (obj) => {
-		var desiredFields = ['firstName', 'lastName', 'county', 'city' ,'role', 'sales']
-
+		var desiredFields = ['firstName', 'lastName', 'county', 'city' ,'role', 'sales', 'parent']
 		desiredFields.forEach((key) => {
-			if (obj[key]) {
+			if (obj[key] || obj[key] === 0) {
 				line += obj[key]
 			} else {
 				line += 'null'
 			} 
 
-			if (key === 'sales') {
+			if (key === 'parent') {
 				line += '\n';
 			} else {
 				line += ',';
@@ -124,8 +131,8 @@ var clientFormating = (results) => {
 		});
 	}
 
-	results.forEach((entry, index) => {
-		line += index + ' - ';
+	results.forEach((entry) => {
+		line += entry.idNum + ' - ';
 		csvIt(entry)
 	});
 
