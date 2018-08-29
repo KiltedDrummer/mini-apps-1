@@ -1,0 +1,36 @@
+{
+  "name": "challenge_3",
+  "version": "1.0.0",
+  "description": "Challenge 3 of mini apps 1",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KiltedDrummer/hrsf102-mini-apps-1.git"
+  },
+  "keywords": [
+    "react"
+  ],
+  "author": "Nicholas Martin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KiltedDrummer/hrsf102-mini-apps-1/issues"
+  },
+  "homepage": "https://github.com/KiltedDrummer/hrsf102-mini-apps-1#readme",
+  "dependencies": {
+    "babel": "^6.23.0",
+    "express": "^4.16.3",
+    "react": "^16.4.2"
+  },
+  "devDependencies": {
+    "babel": "^6.23.0",
+    "babel-cli": "^6.26.0",
+    "babel-preset-react-app": "^3.1.2",
+    "babel-watch": "^2.0.7",
+    "jquery": "^3.3.1",
+    "nodemon": "^1.18.4"
+  }
+}
