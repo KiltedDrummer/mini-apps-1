@@ -6,23 +6,20 @@ const bodyParser = require('body-parser');
 
 var dataStorage = []
 
-app.use(bodyParser.urlencoded({
-  extended: true
-}))
-app.use(bodyParser.json());
 app.use(express.static('client'))
 
+app.use(bodyParser.json());
 app.post('/', (req, res) => {
 	console.log('params ||', req.body);
 	var data = JSON.parse(req.body.params)
-	var results = parseJson(data);
+	var results = parseData(data);
 
 
 	if (req.body.query[0] === 'No Filter') {
-		res.send(JSON.stringify(clientFormating(results)));
+		res.status(202).send(JSON.stringify(clientFormating(results)));
 	} else {
 		var filteredData = filterData(results, req.body.query);
-		res.send(JSON.stringify(clientFormating(filteredData)));
+		res.status(202).send(JSON.stringify(clientFormating(filteredData)));
 	}
 
 
@@ -78,7 +75,7 @@ var mockData = {
 };
 
 // returns an array of obj, each object is a line entry for the CSV report
-var parseJson = (data) => {
+var parseData = (data) => {
 	var results = [];
 
 	var buildEntry = (obj) => {
