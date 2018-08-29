@@ -1,0 +1,25 @@
+{
+  "name": "challenge_2",
+  "version": "1.0.0",
+  "description": "CSV challenge",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/KiltedDrummer/hrsf102-mini-apps-1/tree/master/challenge_2"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.3",
+    "jquery": "^3.3.1",
+    "node": "^10.9.0",
+    "underscore": "^1.9.1"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.3"
+  }
+}

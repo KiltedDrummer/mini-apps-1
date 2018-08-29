@@ -1,2 +1,48 @@
+<DOCTYPE HTML>
+	<html>
+	<head>
+		<title>CSV Challenge</title>
+		<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+		<script src="/app.js"></script>
+	</head>
+	<body>
+		<form id="theForm" action="localhost:3000" method="post">
+			<label for="text-area">
+				<span>Please enter the following information:</span><br>
+				<span>Firstname, Lastname, county, city, role, sales</span><br>
+				<input type="textarea" name="formData" id="formData" required><br>
+			</label>
+<!-- 		</form>	
+		<form id="filterBy" action="localhost:3000" method="get"> -->
+			<label for="filterBy">To filter: select field to limit by and enter keyword</label><br>
+			<input type="text" name="keyWord" id="filterWord">
+			<select id="myselect">
+				<option value="No Filter">No Filter</option>
+				<option value="firstName">First Name</option>
+				<option value="lastName">Last Name</option>
+				<option value="county">County</option>
+				<option value="city">City</option>
+				<option value="role">Role</option>
+				<option value="sales">Sales</option>
+			</select>
+			<input type="submit" value="Submit">	
+			<!-- <input type="submit" value="Filter"> -->
+		</form>
+		<div id="results">
+			DATA TABLE </div>
+	</body>
+	<script type="text/javascript">
+	$( "#theForm" ).submit(function( event ) {
+	  event.preventDefault();
 
+		if (this.attributes[2].nodeValue === 'post') {
+		  handlePost();
+		} 
+		// else if (this.attributes[2].nodeValue === 'get') {
+		// 	handleGet();
+		// }
 
+	});
+
+	</script>
+	</html>
