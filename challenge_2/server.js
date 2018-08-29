@@ -144,7 +144,7 @@ var filterData = (data, query) => {
 	console.log(data);
 	var filtered = [];
 	data.forEach(entry => {
-		if (entry[query[0]] === query[1]) {
+		if (entry[query[0]].includes(query[1])) {
 			filtered.push(entry);
 		}
 	});
