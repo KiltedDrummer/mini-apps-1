@@ -6,13 +6,6 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var formFields = {
-	'1': ['name', 'email', 'password'],
-	'2': ['address line 1', 'address line 2', 'city', 'state', 'zip code', 'phone number'],
-	'3': ['credit card #', 'expiration date', 'CVV', 'billing zip code'],
-	review: ['edit', 'submit']
-};
-
 var App = function (_React$Component) {
 	_inherits(App, _React$Component);
 
@@ -22,36 +15,68 @@ var App = function (_React$Component) {
 		var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
 
 		_this.state = {
-			formNum: 1
+			currentForm: 1,
+			completed: false,
+			data: {}
 		};
 		return _this;
 	}
 
 	_createClass(App, [{
-		key: 'componentDidMount',
-		value: function componentDidMount() {
-			formInput(formFields[this.state.formNum]);
+		key: "nextForm",
+		value: function nextForm() {
+			// handle form Data
+			if (this.state.currentForm < 4) {
+				var formData = parseData(this.state.currentForm);
+				var oldData = this.state.data;
+				Object.assign(oldData, formData);
+				this.setState({
+					data: oldData
+				});
+			}
+
+			// function to call on button click that sets state to next correct value
+			if (!this.state.completed) {
+				if (this.state.currentForm < 4) {
+					var newState = this.state.currentForm + 1;
+					this.setState({
+						currentForm: newState
+					});
+				} else {
+					this.setState({
+						currentForm: 1
+					});
+				}
+			} else {
+				this.setState({
+					currentForm: 4
+				});
+			}
 		}
 	}, {
-		key: 'render',
+		key: "render",
 		value: function render() {
 			return React.createElement(
-				'div',
+				"div",
 				null,
 				React.createElement(
-					'h1',
+					"h1",
 					null,
-					'Extreme Checkout Simulator'
+					"Extreme Checkout Simulator"
 				),
 				React.createElement(
-					'div',
-					{ id: 'formArea' },
+					"div",
+					{ id: "formArea" },
 					React.createElement(
-						'h4',
+						"h4",
 						null,
-						'Please Enter the Following Information'
+						"Please Enter the Following Information"
 					),
-					React.createElement('form', { id: 'theForm', action: 'localhost:3000', method: 'post' })
+					React.createElement(FormBuilder, {
+						current: this.state.currentForm,
+						data: this.state.data,
+						nextClick: this.nextForm.bind(this)
+					})
 				)
 			);
 		}
@@ -60,42 +85,6 @@ var App = function (_React$Component) {
 	return App;
 }(React.Component);
 
-function formInput(fields) {
+// console.log(document.getElementById('appRender'))
 
-	var formBody = document.getElementById('theForm');
-
-	Object.values(fields).forEach(function (entry) {
-		if (entry === 'email') {
-
-			formBody.insertAdjacentHTML('beforeend', '<label htmlFor="email">Enter you email: </label>');
-			formBody.insertAdjacentHTML('beforeend', '<input type="email" name="email" id="email">');
-			formBody.insertAdjacentHTML('beforeend', '<br>');
-		} else if (entry === 'phone number') {
-
-			formBody.insertAdjacentHTML('beforeend', '<label htmlFor="phoneNumber">Enter you phone number: </label>');
-			formBody.insertAdjacentHTML('beforeend', '<input type="tel" name="phone" id="phone">');
-			formBody.insertAdjacentHTML('beforeend', '<br>');
-		} else if (entry === 'password') {
-
-			formBody.insertAdjacentHTML('beforeend', '<label htmlFor="password">Enter you password: </label>');
-			formBody.insertAdjacentHTML('beforeend', '<input type="password" name="password" id="password">');
-			formBody.insertAdjacentHTML('beforeend', '<br>');
-		} else if (entry === 'expiration data') {
-
-			formBody.insertAdjacentHTML('beforeend', '<label htmlFor="experationDate">Enter you experation date: </label>');
-			formBody.insertAdjacentHTML('beforeend', '<input type="month" name="experationDate" id="experationDate">');
-			formBody.insertAdjacentHTML('beforeend', '<br>');
-		} else {
-
-			formBody.insertAdjacentHTML('beforeend', '<label htmlFor=' + entry + '>Enter your ' + entry + '</label>');
-			formBody.insertAdjacentHTML('beforeend', '<input type="text" name="name" id="name">');
-			formBody.insertAdjacentHTML('beforeend', '<br>');
-		}
-	});
-
-	formBody.insertAdjacentHTML('beforeend', '<input type="submit" value="next"></input>');
-
-	// return builtForm;
-}
-
-var testForm1 = formInput(formFields.form1Data);
+ReactDOM.render(React.createElement(App, null), document.getElementById('appRender'));
