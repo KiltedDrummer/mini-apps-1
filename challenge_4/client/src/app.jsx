@@ -20,7 +20,8 @@ class App extends React.Component {
 			columnHeight: [0, 0, 0, 0, 0, 0, 0],
 			currentPlayer: 'Player 1',
 			gameStatus: 'in Progress',
-			currentPiece: 'black'
+			currentPiece: 'black',
+			pieces: 0
 		},
 		this.placePiece = this.placePiece.bind(this);
 		this.changePlayer = this.changePlayer.bind(this);
@@ -48,12 +49,17 @@ class App extends React.Component {
 			let newHeights = this.state.columnHeight.slice();
 			newHeights[colNum]++;
 
+			let count = this.state.pieces;
+			count++;
+
 			// set state with new matrix, colHeights, and with new piece
 			this.setState({
 				matrix: newMatrix,
 				currentPiece: nextPiece,
-				columnHeight: newHeights
+				columnHeight: newHeights,
+				pieces: count
 			});
+			this.checkResults();
 
 			this.changePlayer();
 		}
@@ -72,6 +78,109 @@ class App extends React.Component {
 		});
 
 	}
+
+	checkResults() {
+		debugger;
+		let result;
+		// check rows for 4 in a row
+		this.state.matrix.forEach(row => {
+			if (!result) {
+				result = this.rowChecker(row);
+			}
+		});
+
+		// check columns 
+		//// build each column into a row?
+		if (!result) {
+			result = this.colChecker(this.state.matrix);
+		}
+
+		// check major and minor diagonals
+
+		if (!result) {
+			result = this.checkDiagonals(this.state.matrix);
+		}
+
+		if (!result && this.state.pieces === 42) {
+			result = 'tie'
+		}
+
+		if (result) {
+			this.setState({
+				gameStatus: result
+			});
+		}
+	}
+
+	rowChecker(row) {
+		const pieces = row.join('');
+		if (pieces.includes('blackblackblackblack') || pieces.includes('redredredred')) {
+			return true;
+		}
+	}
+
+	colChecker(matrix) {
+		let result;
+		for (var i = 0; i < matrix.length; i++) {
+			let column = [];
+			matrix.forEach(row => column.push(row[i]));
+			if(this.rowChecker(column)) {
+				return true;
+			}
+		}
+	}
+
+	checkDiagonals(matrix) {
+		let majorDiags = [[], [], [], [], [], []];
+
+		let minorDiags = [[], [], [], [], [], []];
+
+		const buildMajor = {
+			'-2': (val) => majorDiags[0].push(val),
+			'-1': (val) => majorDiags[1].push(val),
+			'0': (val) => majorDiags[2].push(val),
+			'1': (val) => majorDiags[3].push(val),
+			'2': (val) => majorDiags[4].push(val),
+			'3': (val) => majorDiags[5].push(val)
+		};
+
+		const buildMinor = {
+			'3': (val) => minorDiags[0].push(val),
+			'4': (val) => minorDiags[1].push(val),
+			'5': (val) => minorDiags[2].push(val),
+			'6': (val) => minorDiags[3].push(val),
+			'7': (val) => minorDiags[4].push(val),
+			'8': (val) => minorDiags[5].push(val)
+		};
+
+		for (var r = 0; r < matrix.length; r++) {
+			for (var c = 0; c < matrix[r].length; c++) {
+				if (buildMajor[r-c]) {
+					buildMajor[r-c](matrix[r][c]);
+				} else if (buildMinor[r + c]) {
+					buildMinor[r + c](matrix[r][c]);
+				}
+			}
+		}
+
+		let result;
+		for (var i = 0; i < majorDiags; i++) {
+			if (!result) {
+				result = this.rowChecker(majorDiags[i])
+			}
+		}
+
+		for (var i = 0; i < minorDiags.length; i++) {
+			if (!result) {
+				result = this.rowChecker(minorDiags[i]);
+			}
+		}
+
+		return result;
+	}
+
+
+
 
 	render() {
 		return (
