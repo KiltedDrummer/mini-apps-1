@@ -8,13 +8,13 @@ function Results(props) {
 	if (props.result === 'Player 1') {
 		return (
 			<div>
-				<h2>{props.player} Wins!</h2>
+				<h2>{props.result} Wins!</h2>
 			</div>
 			)
 	} else if (props.result === 'Player 2') {
 		return (
 			<div>
-				<h2>{props.player} Wins!</h2>
+				<h2>{props.result} Wins!</h2>
 			</div>
 			)
 	} else if (props.result === 'tie') {

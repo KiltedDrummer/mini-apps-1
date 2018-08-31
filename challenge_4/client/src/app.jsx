@@ -39,6 +39,9 @@ class App extends React.Component {
 			// change location correct location for next piece
 			newMatrix[toRow][colNum] = this.state.currentPiece;
 
+			// this.checkResults(newMatrix);
+
+
 			// determine which color is next
 			let nextPiece;
 			if (this.state.currentPiece === 'black') {
@@ -59,12 +62,12 @@ class App extends React.Component {
 				currentPiece: nextPiece,
 				columnHeight: newHeights,
 				pieces: count
-			}, this.forceUpdate);
+			}, this.checkResults);
 
 
 			this.changePlayer();
 		}
-			this.checkResults();
+			// this.checkResults();
 	}
 
 	changePlayer() {
@@ -111,8 +114,15 @@ class App extends React.Component {
 				gameStatus: 'tie'
 			});
 		} else if (result) {
+			console.log(this.state.currentPlayer)
+			let previous;
+			if (this.state.currentPlayer === 'Player 1') {
+				previous = 'Player 2'
+			} else {
+				previous = 'Player 1'
+			}
 			this.setState({
-				gameStatus: this.state.currentPlayer
+				gameStatus: previous
 			}, this.forceUpdate);
 		}
 	}
