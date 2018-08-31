@@ -19,7 +19,7 @@ function BoardRow(props) {
 	return (
 		// the html to render
 		// render 7 spots next to eachother
-		<div id={ props.rowNum }>
+		<div id={ props.rowNum } style={{backgroundColor: 'gray', width: '714px'}}>
 			{ filledRow }
 		</div>
 	)

@@ -25,8 +25,10 @@ function Spot(props) {
 		borderStyle: 'solid',
 		boderColor: 'black',
 		backgroundColor: color,
-		margin: '1px'
+		margin: '1px',
+		borderRadius: '50px'
 	}
+
 	return (
 		// the html to render
 		// should be a single location that can be filled red or black

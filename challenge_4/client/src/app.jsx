@@ -28,12 +28,13 @@ class App extends React.Component {
 	}
 
 	placePiece(colNum) {
-		if (this.state.columnHeight[colNum] < 6) {
+		console.log(this.state.gameStatus)
+		if (this.state.columnHeight[colNum] < 6 && this.state.gameStatus === 'in Progress') {
 			let toRow = 5 - this.state.columnHeight[colNum];
 			let newMatrix = [];
-			this.state.matrix.forEach(row => {
-				newMatrix.push(row.slice());
-			});
+			this.state.matrix.forEach(row => 
+				newMatrix.push(row.slice())
+			);
 
 			// change location correct location for next piece
 			newMatrix[toRow][colNum] = this.state.currentPiece;
@@ -58,11 +59,12 @@ class App extends React.Component {
 				currentPiece: nextPiece,
 				columnHeight: newHeights,
 				pieces: count
-			});
-			this.checkResults();
+			}, this.forceUpdate);
+
 
 			this.changePlayer();
 		}
+			this.checkResults();
 	}
 
 	changePlayer() {
@@ -111,7 +113,7 @@ class App extends React.Component {
 		} else if (result) {
 			this.setState({
 				gameStatus: this.state.currentPlayer
-			});
+			}, this.forceUpdate);
 		}
 	}
 
