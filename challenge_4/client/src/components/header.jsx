@@ -11,7 +11,7 @@ function Header(props) {
 				<h1>Connect Four</h1>
 				<Results 
 				result={props.gameStatus}
-				player={props.currentPlayer}
+				player={props.player}
 				/>
 			</div>
 		)

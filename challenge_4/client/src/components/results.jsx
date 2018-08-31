@@ -3,6 +3,7 @@ import { Component } from 'react';
 import ReactDom from 'react-dom';
 
 function Results(props) {
+	console.log(props);
 
 	if (props.result === 'Player 1') {
 		return (

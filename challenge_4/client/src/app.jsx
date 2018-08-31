@@ -80,7 +80,6 @@ class App extends React.Component {
 	}
 
 	checkResults() {
-		debugger;
 		let result;
 		// check rows for 4 in a row
 		this.state.matrix.forEach(row => {
@@ -105,9 +104,13 @@ class App extends React.Component {
 			result = 'tie'
 		}
 
-		if (result) {
+		if (result === 'tie') {
 			this.setState({
-				gameStatus: result
+				gameStatus: 'tie'
+			});
+		} else if (result) {
+			this.setState({
+				gameStatus: this.state.currentPlayer
 			});
 		}
 	}
@@ -157,14 +160,16 @@ class App extends React.Component {
 			for (var c = 0; c < matrix[r].length; c++) {
 				if (buildMajor[r-c]) {
 					buildMajor[r-c](matrix[r][c]);
-				} else if (buildMinor[r + c]) {
+				} 
+
+				if (buildMinor[r + c]) {
 					buildMinor[r + c](matrix[r][c]);
 				}
 			}
 		}
 
 		let result;
-		for (var i = 0; i < majorDiags; i++) {
+		for (var i = 0; i < majorDiags.length; i++) {
 			if (!result) {
 				result = this.rowChecker(majorDiags[i])
 			}

@@ -9,6 +9,14 @@ function Spot(props) {
 	//  a column number
 	// and a function that activates a piece placement (trigger a setState on App.js)
 
+	let color = 'lightgrey'
+
+	if (props.piece === 'red') {
+		color = 'red'
+	} else if (props.piece === 'black') {
+		color = 'black';
+	}
+
 	const cssStyle = {
 		display: 'inline-block',
 		height: '100px',
@@ -16,7 +24,7 @@ function Spot(props) {
 		borderWidth: '1px',
 		borderStyle: 'solid',
 		boderColor: 'black',
-		backgroundColor: 'lightgrey',
+		backgroundColor: color,
 		margin: '1px'
 	}
 	return (
